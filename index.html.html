@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fractions Mastery: Basics & Equivalent Fractions</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #fff1f2; /* Soft light red background */
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --border: #fecdd3;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.1), 0 8px 10px -6px rgba(244, 63, 94, 0.05);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #ffe4e6;
+        }
+        /* Cover Page Styles */
+        .cover-page {
+            text-align: center;
+        }
+        .cover-illustration {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+            display: block;
+        }
+        .cover-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .cover-subtitle {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        .start-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+        .start-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Quiz Styles */
+        .quiz-view {
+            display: none;
+        }
+        .top-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .palette-toggle-btn {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #475569;
+        }
+        .palette-toggle-btn:hover {
+            background: #e2e8f0;
+        }
+        h1 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .progress-bar-container {
+            background: #ffe4e6;
+            border-radius: 999px;
+            height: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: var(--primary);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .badge {
+            display: inline-block;
+            background: #fce7f3;
+            color: #db2777;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .options-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text);
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: #fff1f2;
+        }
+        .option-btn.correct {
+            background: #d1fae5 !important;
+            border-color: var(--success) !important;
+            color: #065f46;
+        }
+        .option-btn.incorrect {
+            background: #fee2e2 !important;
+            border-color: var(--error) !important;
+            color: #991b1b;
+        }
+        .explanation-box {
+            background: #fff1f2;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            display: none;
+        }
+        .action-row {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Palette Drawer */
+        .palette-drawer {
+            display: none;
+            background: #fff1f2;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .palette-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 0;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .palette-item.current {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #e0e7ff;
+        }
+        .palette-item.answered {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        .palette-item.skipped {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        /* Score & Review Card */
+        .score-card {
+            text-align: center;
+            display: none;
+        }
+        .score-card h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .review-list {
+            text-align: left;
+            max-height: 350px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+        .review-item {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- COVER PAGE -->
+    <div class="cover-page" id="cover-page">
+        <svg class="cover-illustration" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" fill="#fee2e2" stroke="#f43f5e" stroke-width="6"/>
+            <path d="M 100 100 L 100 10 A 90 90 0 0 1 190 100 Z" fill="#4f46e5" />
+            <path d="M 100 100 L 190 100 A 90 90 0 0 1 100 190 Z" fill="#10b981" />
+            <circle cx="100" cy="100" r="30" fill="#ffffff" stroke="#f43f5e" stroke-width="4"/>
+            <text x="100" y="108" font-size="22" font-weight="bold" text-anchor="middle" fill="#1e293b">1/4</text>
+        </svg>
+        <div class="cover-title">Fractions Mastery</div>
+        <div class="cover-subtitle">Part 1: Basics, Improper/Mixed Fractions & Equivalent Fractions<br>(25 Progressive Questions)</div>
+        <button class="start-btn" onclick="startQuiz()">Start Practice</button>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div class="quiz-view" id="quiz-view">
+        <div class="top-nav-bar">
+            <h1>Fractions Basics</h1>
+            <button class="palette-toggle-btn" onclick="togglePalette()">Questions Map 🗺️</button>
+        </div>
+        <div class="subtitle">Part 1 (Questions 1–25)</div>
+        
+        <div class="palette-drawer" id="palette-drawer">
+            <div style="font-weight: 600; font-size: 0.85rem; color: #475569;">Jump to Question:</div>
+            <div class="palette-grid" id="palette-grid"></div>
+        </div>
+
+        <div class="quiz-header">
+            <span id="question-count">Question 1 of 25</span>
+            <span id="score-tracker">Score: 0</span>
+        </div>
+        
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="badge-container"></div>
+        <div class="question-box" id="question-text">Loading question...</div>
+        
+        <div class="options-grid" id="options-container"></div>
+        
+        <div class="explanation-box" id="explanation-box"></div>
+        
+        <div class="action-row">
+            <button class="btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip for Now</button>
+            <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Lock & Next</button>
+        </div>
+    </div>
+
+    <!-- SCORE & REVIEW CARD -->
+    <div class="score-card" id="score-card">
+        <h1>Part 1 Completed! 🎉</h1>
+        <p>You have finished all 25 questions on Fraction Basics.</p>
+        <h2 id="final-score">Your Score: 0 / 25</h2>
+        <div style="font-weight: 600; margin-top: 15px; color: #475569;" id="review-title">Review of Incorrect Answers:</div>
+        <div class="review-list" id="review-list"></div>
+        <button class="start-btn" onclick="restartQuiz()" style="margin-top: 20px;">Restart Part 1</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {q: "What fraction of a whole is represented by the numerator 3 and denominator 7?", o: ["3/7", "7/3", "4/7", "3/10"], a: 0, wp: false, exp: "The numerator represents the parts taken (3) and the denominator represents total equal parts (7), giving the fraction 3/7."},
+        {q: "In the fraction 5/9, what does 9 represent?", o: ["Numerator", "Denominator", "Whole number", "Remainder"], a: 1, wp: false, exp: "The bottom number in a fraction is called the denominator, which shows the total number of equal parts in the whole."},
+        {q: "Which of the following is a proper fraction?", o: ["7/4", "9/9", "3/8", "11/5"], a: 2, wp: false, exp: "A proper fraction is one where the numerator is strictly smaller than the denominator (3 < 8)."},
+        {q: "Rohan has 8 marbles. He gives 3 marbles to his sister. What fraction of his marbles does he have left?", o: ["3/8", "5/8", "8/5", "5/3"], a: 1, wp: true, exp: "Rohan started with 8 and gave away 3, leaving 8 - 3 = 5 marbles. The fraction left is 5/8."},
+        
+        {q: "Which of the following is an improper fraction?", o: ["2/5", "4/9", "13/7", "1/10"], a: 2, wp: false, exp: "An improper fraction has a numerator greater than or equal to its denominator, such as 13/7."},
+        {q: "Convert the improper fraction 11/4 into a mixed fraction.", o: ["2 3/4", "3 1/4", "2 1/4", "1 3/4"], a: 0, wp: false, exp: "Divide 11 by 4: 4 × 2 = 8 with a remainder of 3. This gives the mixed fraction 2 3/4."},
+        {q: "Convert the mixed fraction 3 2/5 into an improper fraction.", o: ["13/5", "17/5", "15/5", "12/5"], a: 1, wp: false, exp: "Multiply whole number 3 by denominator 5 (15), then add numerator 2 to get 17/5."},
+        {q: "A ribbon is 15 meters long. Priya cuts it into 4 equal pieces. What is the length of each piece as a mixed fraction?", o: ["3 1/4 m", "3 3/4 m", "4 1/4 m", "2 3/4 m"], a: 1, wp: true, exp: "Divide 15 by 4. 4 × 3 = 12 with a remainder of 3, yielding 3 3/4 meters per piece."},
+
+        {q: "Which fraction is equivalent to 2/3?", o: ["4/9", "6/8", "8/12", "3/4"], a: 2, wp: false, exp: "Multiplying both numerator and denominator of 2/3 by 4 gives (2×4)/(3×4) = 8/12."},
+        {q: "Find the missing numerator to make the fractions equivalent: 3/5 = ?/20", o: ["12", "15", "10", "16"], a: 0, wp: false, exp: "The denominator 5 was multiplied by 4 to get 20. Multiply numerator 3 by 4 to get 12."},
+        {q: "Reduce the fraction 24/36 to its lowest terms.", o: ["3/4", "4/6", "2/3", "6/9"], a: 2, wp: false, exp: "Dividing both numerator and denominator by their HCF (12) gives 2/3."},
+        {q: "A basket contains 30 fruits. If 10 of them are apples and the rest are oranges, what fraction of the fruits are oranges, in simplest form?", o: ["1/3", "1/2", "2/3", "3/5"], a: 2, wp: true, exp: "Oranges = 30 - 10 = 20 fruits. The fraction is 20/30, which simplifies to 2/3."},
+
+        {q: "Which of the following sets are like fractions?", o: ["1/4, 2/5, 3/6", "2/7, 4/7, 5/7", "3/8, 3/5, 3/9", "1/2, 2/3, 3/4"], a: 1, wp: false, exp: "Fractions with the exact same denominators are called like fractions (here, denominators are all 7)."},
+        {q: "Which symbol makes the statement true: 3/7 [ ] 5/7", o: ["<", ">", "=", "+"], a: 0, wp: false, exp: "When denominators are equal, the fraction with the smaller numerator is smaller (3 < 5)."},
+        {q: "Arrange in ascending order: 2/9, 7/9, 1/9, 5/9", o: ["7/9, 5/9, 2/9, 1/9", "1/9, 2/9, 5/9, 7/9", "2/9, 1/9, 5/9, 7/9", "1/9, 5/9, 2/9, 7/9"], a: 1, wp: false, exp: "Ascending order means smallest to largest: 1/9, 2/9, 5/9, 7/9."},
+        {q: "Anu painted 2/9 of a wall in the morning and 4/9 of the wall in the evening. What fraction of the wall has she painted in total?", o: ["6/9", "2/9", "8/9", "1/3"], a: 0, wp: true, exp: "Since denominators are like, add numerators: 2/9 + 4/9 = 6/9 (which also simplifies to 2/3)."},
+
+        {q: "Which is greater: 3/4 or 2/3?", o: ["3/4", "2/3", "They are equal", "Cannot be compared"], a: 0, wp: false, exp: "Converting to common denominator 12: 3/4 = 9/12 and 2/3 = 8/12. Since 9 > 8, 3/4 is greater."},
+        {q: "What is the LCM of denominators 4 and 6 when adding 1/4 and 1/6?", o: ["24", "12", "10", "2"], a: 1, wp: false, exp: "Multiples of 4: 4, 8, 12... Multiples of 6: 6, 12... The lowest common multiple is 12."},
+        {q: "Convert 3/4 and 4/5 into like fractions with their lowest common denominator.", o: ["15/20 and 16/20", "12/20 and 15/20", "10/20 and 12/20", "12/20 and 16/20"], a: 0, wp: false, exp: "LCD of 4 and 5 is 20. 3/4 = 15/20 and 4/5 = 16/20."},
+        {q: "Kabir studied for 3/4 of an hour on Saturday and 1/2 of an hour on Sunday. How much more time did he study on Saturday than on Sunday?", o: ["1/4 hour", "1/2 hour", "3/4 hour", "1/8 hour"], a: 0, wp: true, exp: "Convert 1/2 to 2/4. Then 3/4 - 2/4 = 1/4 hour."},
+
+        {q: "Compare using <, >, or = : 5/8 [ ] 7/12", o: ["<", ">", "=", "None"], a: 1, wp: false, exp: "Common denominator 24: 5/8 = 15/24 and 7/12 = 14/24. Since 15 > 14, 5/8 is greater."},
+        {q: "Find the simplest form of 18/24.", o: ["3/4", "2/3", "5/6", "4/5"], a: 0, wp: false, exp: "Divide both by their HCF (6) to get 3/4."},
+        {q: "Which fraction is smaller than 4/7?", o: ["5/7", "3/7", "8/7", "6/7"], a: 1, wp: false, exp: "With equal denominators, 3/7 is smaller than 4/7 because 3 < 4."},
+        {q: "A tank is 3/5 full of water. Neha pours out 1/4 of the tank's capacity. What fraction of the tank is still full?", o: ["7/20", "1/20", "3/20", "9/20"], a: 0, wp: true, exp: "Subtract 1/4 from 3/5 using LCD 20: (12/20) - (5/20) = 7/20."},
+        {q: "Identify the odd one out among equivalent fractions of 3/4:", o: ["6/8", "9/12", "12/16", "10/14"], a: 3, wp: false, exp: "6/8, 9/12, and 12/16 all reduce to 3/4. 10/14 reduces to 5/7, making it the odd one out."}
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(questions.length).fill(null); // null = unanswered, number = chosen option index
+    let questionStates = new Array(questions.length).fill("unanswered"); // "unanswered", "skipped", "answered"
+    let score = 0;
+
+    const coverPage = document.getElementById("cover-page");
+    const quizView = document.getElementById("quiz-view");
+    const scoreCard = document.getElementById("score-card");
+    const questionCountElem = document.getElementById("question-count");
+    const scoreTrackerElem = document.getElementById("score-tracker");
+    const progressBarElem = document.getElementById("progress-bar");
+    const badgeContainerElem = document.getElementById("badge-container");
+    const questionTextElem = document.getElementById("question-text");
+    const optionsContainerElem = document.getElementById("options-container");
+    const explanationBox = document.getElementById("explanation-box");
+    const nextBtnElem = document.getElementById("next-btn");
+    const skipBtnElem = document.getElementById("skip-btn");
+    const paletteDrawer = document.getElementById("palette-drawer");
+    const paletteGrid = document.getElementById("palette-grid");
+    const finalScoreElem = document.getElementById("final-score");
+    const reviewList = document.getElementById("review-list");
+
+    function startQuiz() {
+        coverPage.style.display = "none";
+        quizView.style.display = "block";
+        buildPalette();
+        loadQuestion();
+    }
+
+    function buildPalette() {
+        paletteGrid.innerHTML = "";
+        questions.forEach((_, idx) => {
+            const item = document.createElement("div");
+            item.className = "palette-item";
+            item.textContent = idx + 1;
+            item.onclick = () => {
+                currentQuestion = idx;
+                paletteDrawer.style.display = "none";
+                loadQuestion();
+            };
+            paletteGrid.appendChild(item);
+        });
+        updatePaletteUI();
+    }
+
+    function updatePaletteUI() {
+        const items = paletteGrid.children;
+        for (let i = 0; i < items.length; i++) {
+            items[i].className = "palette-item";
+            if (i === currentQuestion) {
+                items[i].classList.add("current");
+            } else if (questionStates[i] === "answered") {
+                items[i].classList.add("answered");
+            } else if (questionStates[i] === "skipped") {
+                items[i].classList.add("skipped");
+            }
+        }
+    }
+
+    function togglePalette() {
+        paletteDrawer.style.display = paletteDrawer.style.display === "block" ? "none" : "block";
+    }
+
+    function loadQuestion() {
+        const qData = questions[currentQuestion];
+        const savedAnswer = userAnswers[currentQuestion];
+        const isLocked = questionStates[currentQuestion] === "answered";
+
+        // Update progress
+        questionCountElem.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        scoreTrackerElem.textContent = `Score: ${score}`;
+        progressBarElem.style.width = `${(currentQuestion / questions.length) * 100}%`;
+
+        // Badge display
+        if (qData.wp) {
+            badgeContainerElem.innerHTML = `<span class="badge">Word Problem</span>`;
+        } else {
+            badgeContainerElem.innerHTML = `<span class="badge" style="background:#e0e7ff; color:#4f46e5;">Concept & Computation</span>`;
+        }
+
+        questionTextElem.textContent = `${currentQuestion + 1}. ${qData.q}`;
+        optionsContainerElem.innerHTML = "";
+        explanationBox.style.display = "none";
+
+        qData.o.forEach((option, index) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = option;
+
+            if (isLocked) {
+                btn.disabled = true;
+                if (index === qData.a) {
+                    btn.classList.add("correct");
+                } else if (index === savedAnswer) {
+                    btn.classList.add("incorrect");
+                }
+            } else {
+                btn.onclick = () => selectOption(index, btn);
+            }
+
+            optionsContainerElem.appendChild(btn);
+        });
+
+        if (isLocked) {
+            explanationBox.textContent = `Explanation: ${qData.exp}`;
+            explanationBox.style.display = "block";
+            nextBtnElem.textContent = currentQuestion === questions.length - 1 ? "Finish Part 1" : "Next Question";
+            nextBtnElem.disabled = false;
+            skipBtnElem.style.display = "none";
+        } else {
+            nextBtnElem.textContent = "Lock & Submit";
+            nextBtnElem.disabled = true;
+            skipBtnElem.style.display = "block";
+        }
+
+        updatePaletteUI();
+    }
+
+    let selectedOptionTemp = null;
+
+    function selectOption(index, btn) {
+        selectedOptionTemp = index;
+        const buttons = optionsContainerElem.getElementsByClassName("option-btn");
+        for (let b of buttons) {
+            b.style.borderColor = "var(--border)";
+            b.style.background = "#ffffff";
+        }
+        btn.style.borderColor = "var(--primary)";
+        btn.style.background = "#fff1f2";
+        nextBtnElem.disabled = false;
+    }
+
+    // Hook next button to handle lock/submit or advancing
+    nextBtnElem.onclick = function() {
+        const isLocked = questionStates[currentQuestion] === "answered";
+        if (!isLocked) {
+            // Lock and grade
+            const qData = questions[currentQuestion];
+            const buttons = optionsContainerElem.getElementsByClassName("option-btn");
+            
+            userAnswers[currentQuestion] = selectedOptionTemp;
+            questionStates[currentQuestion] = "answered";
+
+            if (selectedOptionTemp === qData.a) {
+                buttons[selectedOptionTemp].classList.add("correct");
+                score++;
+            } else {
+                buttons[selectedOptionTemp].classList.add("incorrect");
+                buttons[qData.a].classList.add("correct");
+            }
+
+            for (let b of buttons) b.disabled = true;
+
+            explanationBox.textContent = `Explanation: ${qData.exp}`;
+            explanationBox.style.display = "block";
+            scoreTrackerElem.textContent = `Score: ${score}`;
+
+            skipBtnElem.style.display = "none";
+            nextBtnElem.textContent = currentQuestion === questions.length - 1 ? "Finish Part 1" : "Next Question";
+            updatePaletteUI();
+        } else {
+            // Advance
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                selectedOptionTemp = null;
+                loadQuestion();
+            } else {
+                showScore();
+            }
+        }
+    };
+
+    function skipQuestion() {
+        if (questionStates[currentQuestion] === "unanswered") {
+            questionStates[currentQuestion] = "skipped";
+        }
+        // Find next unanswered or skipped
+        let nextIdx = (currentQuestion + 1) % questions.length;
+        while (nextIdx !== currentQuestion && questionStates[nextIdx] === "answered") {
+            nextIdx = (nextIdx + 1) % questions.length;
+        }
+        currentQuestion = nextIdx;
+        selectedOptionTemp = null;
+        loadQuestion();
+    }
+
+    function showScore() {
+        quizView.style.display = "none";
+        scoreCard.style.display = "block";
+        finalScoreElem.textContent = `Your Score: ${score} / ${questions.length}`;
+
+        reviewList.innerHTML = "";
+        let incorrectCount = 0;
+
+        questions.forEach((q, idx) => {
+            const userAns = userAnswers[idx];
+            if (userAns !== q.a) {
+                incorrectCount++;
+                const div = document.createElement("div");
+                div.className = "review-item";
+                div.innerHTML = `<strong>Q${idx + 1}:</strong> ${q.q}<br>
+                    <span style="color:var(--error)">Your Answer: ${userAns !== null ? q.o[userAns] : "Skipped"}</span><br>
+                    <span style="color:var(--success)">Correct Answer: ${q.o[q.a]}</span><br>
+                    <em style="color:#475569; font-size:0.85rem;">${q.exp}</em>`;
+                reviewList.appendChild(div);
+            }
+        });
+
+        if (incorrectCount === 0) {
+            reviewList.innerHTML = "<p style='color:var(--success); font-weight:600;'>Amazing! You got every single question correct in Part 1!</p>";
+        }
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        userAnswers = new Array(questions.length).fill(null);
+        questionStates = new Array(questions.length).fill("unanswered");
+        scoreCard.style.display = "none";
+        coverPage.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
